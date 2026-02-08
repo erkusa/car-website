@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Website - Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1E1E1E;
+      color: #FFFFFF;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: #2A2A2A;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar h1 {
+      color: #E10600;
+      font-size: 24px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      background: #E10600;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: #C10500;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    .add-car-section {
+      background: #2A2A2A;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .add-car-section h2 {
+      margin-bottom: 20px;
+      color: #E10600;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #CCC;
+    }
+
+    input, textarea {
+      padding: 10px;
+      background: #1E1E1E;
+      border: 1px solid #3A3A3A;
+      border-radius: 5px;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #E10600;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #E10600;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: #C10500;
+      transform: translateY(-2px);
+    }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .car-card {
+      background: #2A2A2A;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(225, 6, 0, 0.3);
+    }
+
+    .car-card h3 {
+      color: #E10600;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .car-info {
+      margin-bottom: 15px;
+    }
+
+    .car-info p {
+      margin: 5px 0;
+      color: #CCC;
+      font-size: 14px;
+    }
+
+    .car-price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #FFFFFF;
+      margin: 10px 0;
+    }
+
+    .car-owner {
+      font-size: 12px;
+      color: #888;
+      margin-top: 10px;
+    }
+
+    .car-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn-edit, .btn-delete {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .btn-edit {
+      background: #3A3A3A;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background: #4A4A4A;
+    }
+
+    .btn-delete {
+      background: rgba(225, 6, 0, 0.2);
+      color: #E10600;
+      border: 1px solid #E10600;
+    }
+
+    .btn-delete:hover {
+      background: #E10600;
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #888;
+    }
+
+    .empty-state h2 {
+      margin-bottom: 10px;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.success {
+      background: rgba(0, 200, 0, 0.1);
+      border: 1px solid #00C800;
+      color: #00C800;
+    }
+
+    .message.error {
+      background: rgba(225, 6, 0, 0.1);
+      border: 1px solid #E10600;
+      color: #E10600;
+    }
+
+    .message.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background: #2A2A2A;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h2 {
+      color: #E10600;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: auto;
+    }
+
+    .close-btn:hover {
+      color: #E10600;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Car Website</h1>
+    <div class="nav-buttons">
+      <button class="nav-btn" onclick="window.location.href='/profile.html'">Profile</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="message" class="message"></div>
+
+    <div class="add-car-section">
+      <h2>Add New Car</h2>
+      <form id="add-car-form" onsubmit="handleAddCar(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Brand</label>
+            <input type="text" id="brand" required>
+          </div>
+          <div class="form-group">
+            <label>Model</label>
+            <input type="text" id="model" required>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="year" required min="1900" max="2030">
+          </div>
+          <div class="form-group">
+            <label>Price ($)</label>
+            <input type="number" id="price" required min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Add Car</button>
+      </form>
+    </div>
+
+    <h2 style="margin-bottom: 20px;">All Cars</h2>
+    <div id="cars-grid" class="cars-grid"></div>
+  </div>
+
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Edit Car</h2>
+        <button class="close-btn" onclick="closeEditModal()">&times;</button>
+      </div>
+      <form id="edit-car-form" onsubmit="handleEditCar(event)">
+        <input type="hidden" id="edit-car-id">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Brand</label>
+            <input type="text" id="edit-brand" required>
+          </div>
+          <div class="form-group">
+            <label>Model</label>
+            <input type="text" id="edit-model" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="edit-year" required min="1900" max="2030">
+          </div>
+          <div class="form-group">
+            <label>Price ($)</label>
+            <input type="number" id="edit-price" required min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="edit-description"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Update Car</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = window.location.origin + '/api';
+    let currentUser = null;
+
+    function checkAuth() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (!token || !user) {
+        window.location.href = '/';
+        return false;
+      }
+      
+      currentUser = JSON.parse(user);
+      return true;
+    }
+
+    function showMessage(message, type = 'success') {
+      const msgDiv = document.getElementById('message');
+      msgDiv.textContent = message;
+      msgDiv.className = `message ${type} show`;
+      setTimeout(() => msgDiv.classList.remove('show'), 3000);
+    }
+
+    async function fetchCars() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch cars');
+
+        const cars = await response.json();
+        displayCars(cars);
+      } catch (error) {
+        showMessage('Failed to load cars', 'error');
+      }
+    }
+
+    function displayCars(cars) {
+      const grid = document.getElementById('cars-grid');
+      
+      if (cars.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><h2>No cars yet</h2><p>Add your first car above!</p></div>';
+        return;
+      }
+
+      grid.innerHTML = cars.map(car => {
+        const isOwner = currentUser && car.owner._id === currentUser.id;
+        return `
+          <div class="car-card">
+            <h3>${car.brand} ${car.model}</h3>
+            <div class="car-info">
+              <p>Year: ${car.year}</p>
+              <p>${car.description || 'No description'}</p>
+            </div>
+            <div class="car-price">$${car.price.toLocaleString()}</div>
+            <div class="car-owner">Posted by: ${car.owner.username}</div>
+            ${isOwner ? `
+              <div class="car-actions">
+                <button class="btn-edit" onclick="openEditModal('${car._id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteCar('${car._id}')">Delete</button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleAddCar(e) {
+      e.preventDefault();
+      
+      const carData = {
+        brand: document.getElementById('brand').value,
+        model: document.getElementById('model').value,
+        year: parseInt(document.getElementById('year').value),
+        price: parseFloat(document.getElementById('price').value),
+        description: document.getElementById('description').value
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(carData)
+        });
+
+        if (!response.ok) throw new Error('Failed to add car');
+
+        showMessage('Car added successfully!');
+        document.getElementById('add-car-form').reset();
+        fetchCars();
+      } catch (error) {
+        showMessage('Failed to add car', 'error');
+      }
+    }
+
+    async function openEditModal(carId) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars/${carId}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch car');
+
+        const car = await response.json();
+        
+        document.getElementById('edit-car-id').value = car._id;
+        document.getElementById('edit-brand').value = car.brand;
+        document.getElementById('edit-model').value = car.model;
+        document.getElementById('edit-year').value = car.year;
+        document.getElementById('edit-price').value = car.price;
+        document.getElementById('edit-description').value = car.description;
+        
+        document.getElementById('edit-modal').classList.add('show');
+      } catch (error) {
+        showMessage('Failed to load car details', 'error');
+      }
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('show');
+    }
+
+    async function handleEditCar(e) {
+      e.preventDefault();
+      
+      const carId = document.getElementById('edit-car-id').value;
+      const carData = {
+        brand: document.getElementById('edit-brand').value,
+        model: document.getElementById('edit-model').value,
+        year: parseInt(document.getElementById('edit-year').value),
+        price: parseFloat(document.getElementById('edit-price').value),
+        description: document.getElementById('edit-description').value
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars/${carId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(carData)
+        });
+
+        if (!response.ok) throw new Error('Failed to update car');
+
+        showMessage('Car updated successfully!');
+        closeEditModal();
+        fetchCars();
+      } catch (error) {
+        showMessage('Failed to update car', 'error');
+      }
+    }
+
+    async function deleteCar(carId) {
+      if (!confirm('Are you sure you want to delete this car?')) return;
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars/${carId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to delete car');
+
+        showMessage('Car deleted successfully!');
+        fetchCars();
+      } catch (error) {
+        showMessage('Failed to delete car', 'error');
+      }
+    }
+
+    document.getElementById('edit-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'edit-modal') closeEditModal();
+    });
+
+    if (checkAuth()) {
+      fetchCars();
+    }
+  </script>
+</body>
+</html>

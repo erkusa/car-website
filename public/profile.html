@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Car Website</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1E1E1E;
+      color: #FFFFFF;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: #2A2A2A;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar h1 {
+      color: #E10600;
+      font-size: 24px;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      background: #E10600;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: #C10500;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    .profile-card {
+      background: #2A2A2A;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-card h2 {
+      color: #E10600;
+      margin-bottom: 20px;
+    }
+
+    .profile-info {
+      display: grid;
+      gap: 15px;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      background: #1E1E1E;
+      border-radius: 5px;
+    }
+
+    .info-label {
+      color: #888;
+      font-size: 14px;
+    }
+
+    .info-value {
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #CCC;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      background: #1E1E1E;
+      border: 1px solid #3A3A3A;
+      border-radius: 5px;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #E10600;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background: #E10600;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #C10500;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #3A3A3A;
+      color: white;
+      margin-left: 10px;
+    }
+
+    .btn-secondary:hover {
+      background: #4A4A4A;
+    }
+
+    .btn-logout {
+      background: rgba(225, 6, 0, 0.2);
+      color: #E10600;
+      border: 1px solid #E10600;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .btn-logout:hover {
+      background: #E10600;
+      color: white;
+    }
+
+    .cars-section {
+      margin-top: 30px;
+    }
+
+    .cars-section h3 {
+      color: #E10600;
+      margin-bottom: 20px;
+    }
+
+    .cars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .car-card {
+      background: #2A2A2A;
+      border-radius: 10px;
+      padding: 20px;
+      transition: all 0.3s;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .car-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(225, 6, 0, 0.3);
+    }
+
+    .car-card h4 {
+      color: #E10600;
+      margin-bottom: 10px;
+    }
+
+    .car-info p {
+      margin: 5px 0;
+      color: #CCC;
+      font-size: 14px;
+    }
+
+    .car-price {
+      font-size: 20px;
+      font-weight: bold;
+      color: #FFFFFF;
+      margin-top: 10px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.success {
+      background: rgba(0, 200, 0, 0.1);
+      border: 1px solid #00C800;
+      color: #00C800;
+    }
+
+    .message.error {
+      background: rgba(225, 6, 0, 0.1);
+      border: 1px solid #E10600;
+      color: #E10600;
+    }
+
+    .message.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .edit-mode {
+      display: none;
+    }
+
+    .edit-mode.active {
+      display: block;
+    }
+
+    .view-mode.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h1>Car Website</h1>
+    <button class="nav-btn" onclick="window.location.href='/main.html'">Back to Home</button>
+  </div>
+
+  <div class="container">
+    <div id="message" class="message"></div>
+
+    <div class="profile-card">
+      <h2>My Profile</h2>
+      
+      <div id="view-mode" class="view-mode">
+        <div class="profile-info">
+          <div class="info-item">
+            <span class="info-label">Username</span>
+            <span class="info-value" id="display-username"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="display-email"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Bio</span>
+            <span class="info-value" id="display-bio"></span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Member Since</span>
+            <span class="info-value" id="display-joined"></span>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="toggleEditMode()" style="margin-top: 20px;">Edit Profile</button>
+      </div>
+
+      <div id="edit-mode" class="edit-mode">
+        <form id="edit-profile-form" onsubmit="handleUpdateProfile(event)">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="edit-username" required minlength="3">
+          </div>
+          <div class="form-group">
+            <label>Bio</label>
+            <textarea id="edit-bio" maxlength="200"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+        </form>
+      </div>
+
+      <button class="btn btn-logout" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="cars-section">
+      <h3>My Cars</h3>
+      <div id="my-cars-grid" class="cars-grid"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = window.location.origin + '/api';
+    let currentUser = null;
+
+    function checkAuth() {
+      const token = localStorage.getItem('token');
+      const user = localStorage.getItem('user');
+      
+      if (!token || !user) {
+        window.location.href = '/';
+        return false;
+      }
+      
+      currentUser = JSON.parse(user);
+      return true;
+    }
+
+    function showMessage(message, type = 'success') {
+      const msgDiv = document.getElementById('message');
+      msgDiv.textContent = message;
+      msgDiv.className = `message ${type} show`;
+      setTimeout(() => msgDiv.classList.remove('show'), 3000);
+    }
+
+    async function loadProfile() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/users/profile`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch profile');
+
+        const user = await response.json();
+        displayProfile(user);
+        loadMyCars();
+      } catch (error) {
+        showMessage('Failed to load profile', 'error');
+      }
+    }
+
+    function displayProfile(user) {
+      document.getElementById('display-username').textContent = user.username;
+      document.getElementById('display-email').textContent = user.email;
+      document.getElementById('display-bio').textContent = user.bio || 'No bio yet';
+      document.getElementById('display-joined').textContent = new Date(user.createdAt).toLocaleDateString();
+      
+      document.getElementById('edit-username').value = user.username;
+      document.getElementById('edit-bio').value = user.bio || '';
+    }
+
+    function toggleEditMode() {
+      const viewMode = document.getElementById('view-mode');
+      const editMode = document.getElementById('edit-mode');
+      
+      viewMode.classList.toggle('hidden');
+      editMode.classList.toggle('active');
+    }
+
+    async function handleUpdateProfile(e) {
+      e.preventDefault();
+      
+      const profileData = {
+        username: document.getElementById('edit-username').value,
+        bio: document.getElementById('edit-bio').value
+      };
+
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/users/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(profileData)
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.message);
+        }
+
+        const updatedUser = await response.json();
+        
+        // Update localStorage
+        const currentUserData = JSON.parse(localStorage.getItem('user'));
+        currentUserData.username = updatedUser.username;
+        localStorage.setItem('user', JSON.stringify(currentUserData));
+        
+        showMessage('Profile updated successfully!');
+        displayProfile(updatedUser);
+        toggleEditMode();
+      } catch (error) {
+        showMessage(error.message || 'Failed to update profile', 'error');
+      }
+    }
+
+    async function loadMyCars() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/cars`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch cars');
+
+        const allCars = await response.json();
+        const myCars = allCars.filter(car => car.owner._id === currentUser.id);
+        displayMyCars(myCars);
+      } catch (error) {
+        showMessage('Failed to load your cars', 'error');
+      }
+    }
+
+    function displayMyCars(cars) {
+      const grid = document.getElementById('my-cars-grid');
+      
+      if (cars.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><h3>No cars yet</h3><p>Go to home page to add your first car!</p></div>';
+        return;
+      }
+
+      grid.innerHTML = cars.map(car => `
+        <div class="car-card">
+          <h4>${car.brand} ${car.model}</h4>
+          <div class="car-info">
+            <p>Year: ${car.year}</p>
+            <p>${car.description || 'No description'}</p>
+          </div>
+          <div class="car-price">$${car.price.toLocaleString()}</div>
+        </div>
+      `).join('');
+    }
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+      }
+    }
+
+    if (checkAuth()) {
+      loadProfile();
+    }
+  </script>
+</body>
+</html>
