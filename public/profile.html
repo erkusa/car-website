@@ -407,7 +407,6 @@
 
         const updatedUser = await response.json();
         
-        // Update localStorage
         const currentUserData = JSON.parse(localStorage.getItem('user'));
         currentUserData.username = updatedUser.username;
         localStorage.setItem('user', JSON.stringify(currentUserData));
